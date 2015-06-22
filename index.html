@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="framer.js"></script>        
+
+        <style type="text/css">
+            body{
+                background: #C5CAE9
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <script>
+            var device = new Framer.DeviceComponent();
+
+            device.setupContext();
+            device.deviceType = "iphone-5c-pink-hand";
+            device.setDeviceScale(0.3);
+
+            // Draw an white square
+            var whiteSquare = new Layer(
+                {
+                  backgroundColor: "#FFFFFF",
+                  width: 400,
+                  height: 400,
+                  y: 20
+                }
+            );
+
+            whiteSquare.centerX();
+
+            // Draw an image
+            var pic = new Layer(
+                {
+                    image: "painting.jpg",
+                    width: 400,
+                    height: 400,
+                    y: 440
+                }
+            );
+
+            pic.centerX();
+
+            // Make it draggable
+            pic.draggable.enabled = true;
+
+            // Write text
+            var text = new Layer(
+                {
+                    width: Screen.width,
+                    height: 100,
+                    y: 860,
+                    html: "This is a prototype",
+                    style: {
+                        fontSize: "50px",
+                        textAlign: "center",
+                        color: "#f1f2f3",
+                        paddingTop: "18px"
+                    }
+                }
+            );
+
+            // Click event
+            text.on("click", function(){
+                text.html = "I was clicked";
+            });
+
+            // Animate borderRadius
+            whiteSquare.animate({
+                properties: {
+                    borderRadius: whiteSquare.width/2
+                },
+
+                time: 2, // duration is two seconds
+                curve: "ease-in-out" // apply easing
+            });
+
+            // Change shadow
+            whiteSquare.on("click", function(){
+
+                whiteSquare.shadowColor = "#555555";
+
+                whiteSquare.animate({
+                    "properties": {            
+                        shadowBlur: 40,
+                        shadowSpread: 10
+                    }
+                });
+            });
+
+            // Add states
+            pic.states.add({
+                "myState1" : {
+                    borderRadius: 100
+                },
+
+                "myState2": {
+                    borderRadius: 200
+                }
+            });
+
+            // Change State
+            pic.on("click", function() {
+                pic.states.next();
+            });
+
+            // Create Background
+            var bg = new BackgroundLayer({
+                backgroundColor: "#BDBDBD"
+            });
+
+            // Handle dragend
+            pic.on("dragend", function(){
+                pic.animate({
+                    "properties": {
+                        x: Screen.width/2 - pic.width/2, // Place at Center
+                        y: 440 // Original Y
+                    }
+                });
+            });
+        </script>
+
+    </body>
+</html>
